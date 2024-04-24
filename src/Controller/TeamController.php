@@ -26,6 +26,9 @@ class TeamController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $team = new Team();
+        $team->setCreatedAt(new \DateTimeImmutable());
+        $team->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+        $team->setStatus('active');
         $form = $this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
 

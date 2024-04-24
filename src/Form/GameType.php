@@ -14,12 +14,12 @@ class GameType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('created_at', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('updated_at', null, [
-                'widget' => 'single_text',
-            ])
+//            ->add('created_at', null, [
+//                'widget' => 'single_text',
+//            ])
+//            ->add('updated_at', null, [
+//                'widget' => 'single_text',
+//            ])
             ->add('occuring_at', null, [
                 'widget' => 'single_text',
             ])

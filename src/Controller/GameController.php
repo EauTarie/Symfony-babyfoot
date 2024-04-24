@@ -23,11 +23,13 @@ class GameController extends AbstractController
     }
 
     #[Route('/new', name: 'app_game_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, Game $gameEntity): Response
     {
         $game = new Game();
+//        $game->setCreatedAt(new \DateTimeImmutable());
         $form = $this->createForm(GameType::class, $game);
         $form->handleRequest($request);
+//        $gameEntity->set
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($game);

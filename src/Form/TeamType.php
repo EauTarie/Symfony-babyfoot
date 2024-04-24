@@ -13,17 +13,18 @@ class TeamType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('slogan')
             ->add('description')
-            ->add('created_at', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('updated_at', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('last_matched', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('status')
+//            ->add('created_at', null, [
+//                'widget' => 'single_text',
+//            ])
+//            ->add('updated_at', null, [
+//                'widget' => 'single_text',
+//            ])
+//            ->add('last_matched', null, [
+//                'widget' => 'single_text',
+//            ])
+//            ->add('status')
         ;
     }
 
