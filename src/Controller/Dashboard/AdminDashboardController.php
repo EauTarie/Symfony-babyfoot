@@ -36,6 +36,7 @@ class AdminDashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setTitle('FootFrenzy');
+
     }
 
     public function configureMenuItems(): iterable
