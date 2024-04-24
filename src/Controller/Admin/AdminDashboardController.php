@@ -42,7 +42,8 @@ class AdminDashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Babyfoot');
+            ->setTitle('Foot Frenzy');
+//            ->setTitle('<img src="assets/img/logo.png">');
     }
 
     public function configureMenuItems(): iterable
