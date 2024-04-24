@@ -40,6 +40,9 @@ class Team
     #[ORM\OneToMany(targetEntity: PlayerTeam::class, mappedBy: 'id_team')]
     private Collection $playerTeams;
 
+    #[ORM\Column(length: 75)]
+    private ?string $slogan = null;
+
     public function __construct()
     {
         $this->playerTeams = new ArrayCollection();
@@ -148,6 +151,18 @@ class Team
                 $playerTeam->setIdTeam(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlogan(): ?string
+    {
+        return $this->slogan;
+    }
+
+    public function setSlogan(string $slogan): static
+    {
+        $this->slogan = $slogan;
 
         return $this;
     }
