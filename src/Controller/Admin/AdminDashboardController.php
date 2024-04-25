@@ -50,7 +50,7 @@ class AdminDashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToRoute('Retour à l\'accueil', 'fas fa-home', 'homepage');
         yield MenuItem::linkToCrud('User', 'fas fa-comments', User::class);
-        yield MenuItem::linkToCrud('Team', 'fas fa-map-marker-alt', Team::class);
+        yield MenuItem::linkToCrud('Team', 'fas fa-user-plus', Team::class);
         yield MenuItem::linkToCrud('Game', 'fas fa-map-marker-alt', Game::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }

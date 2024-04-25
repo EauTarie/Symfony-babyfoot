@@ -26,10 +26,10 @@ class GameController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, Game $gameEntity): Response
     {
         $game = new Game();
-//        $game->setCreatedAt(new \DateTimeImmutable());
+        $game->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+        $game->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
         $form = $this->createForm(GameType::class, $game);
         $form->handleRequest($request);
-//        $gameEntity->set
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($game);
