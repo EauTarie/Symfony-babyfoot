@@ -25,19 +25,19 @@ class GameType extends AbstractType
             ])
             ->add('duration')
             ->add('score')
-            ->add('winningReason')
+//            ->add('winningReason')
             ->add('id_team', EntityType::class, [
                 'class' => Team::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
             ->add('secondTeam', EntityType::class, [
                 'class' => Team::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
-            ->add('winner', EntityType::class, [
-                'class' => Team::class,
-                'choice_label' => 'id',
-            ])
+//            ->add('winner', EntityType::class, [
+//                'class' => Team::class,
+//                'choice_label' => 'id',
+//            ])
         ;
     }
 

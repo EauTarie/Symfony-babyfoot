@@ -3,8 +3,11 @@
     <li>Nom: {{ playerTeam.idTeam.name }}</li>
     <li>Slogan: {{ playerTeam.idTeam.slogan }}</li>
     <li>Description: {{ playerTeam.idTeam.description }}</li>
+    <a href="{{ path('app_game_show', {id: playerTeam.idTeam.id}) }}">Voir plus</a>
+    <a href="{{ path('app_game_edit', {id: playerTeam.idTeam.id}) }}">Modifier</a>
     {% if playerTeam.idTeam.lastMatched != null %}
 {#        <li>Dernière partie: {{  playerTeam.idTeam.lastMatched }}</li>#}
+
     {% endif %}
 {% endfor %}
 </ul>

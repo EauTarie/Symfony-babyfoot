@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Game;
+use App\Entity\PlayerTeam;
 use App\Form\GameType;
 use App\Repository\GameRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,6 +26,9 @@ class GameController extends AbstractController
     #[Route('/new', name: 'app_game_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Game $gameEntity): Response
     {
+        $currentUser = $this->getUser();
+        $playerTeamRepository = $entityManager->getRepository(PlayerTeam::class);
+        $playerTeamCollection = $playerTeamRepository->findBy(['id_player' => $currentUser]);
         $game = new Game();
         $game->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         $game->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
@@ -32,6 +36,14 @@ class GameController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->get('id_team')->getData() === $form->get('secondTeam')->getData()) {
+            dd($request);
+            return $this->render('game/new.html.twig', [
+                'game' => $game,
+                'form' => $form,
+                $playerTeamCollection,
+            ]);
+        }
             $entityManager->persist($game);
             $entityManager->flush();
 
@@ -41,6 +53,7 @@ class GameController extends AbstractController
         return $this->render('game/new.html.twig', [
             'game' => $game,
             'form' => $form,
+            $playerTeamCollection,
         ]);
     }
 

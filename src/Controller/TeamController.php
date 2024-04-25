@@ -21,6 +21,7 @@ class TeamController extends AbstractController
     #[Route('/', name: 'app_team_index', methods: ['GET'])]
     public function index(TeamRepository $teamRepository, EntityManagerInterface $entityManager): Response
     {
+        $currentUser = $this->getUser();
         return $this->render('team/index.html.twig', [
             'teams' => $teamRepository->findAll(),
         ]);
@@ -39,16 +40,26 @@ class TeamController extends AbstractController
     #[Route('/new', name: 'app_team_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $currentUser = $this->getUser();
         $team = new Team();
+        $playerTeam = new PlayerTeam();
         $team->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         $team->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
         $team->setStatus('active');
+
+
         $form = $this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($team);
             $entityManager->flush();
+            $playerTeam->setIdPlayer($currentUser);
+            $playerTeam->setIdTeam($team);
+            $entityManager->persist($playerTeam);
+            $entityManager->flush();
+
+
 
             return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
         }
