@@ -36,6 +36,9 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/team/(new|edit|delete|join), roles: ROLE_USER }
+         - { path: ^/game/(new|edit|delete), roles: ROLE_USER }
+         - { path: ^/game/result, roles: ROLE_ARBITER }
 
 when@test:
     security:

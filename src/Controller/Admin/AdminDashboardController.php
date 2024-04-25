@@ -49,9 +49,10 @@ class AdminDashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToRoute('Retour à l\'accueil', 'fas fa-home', 'homepage');
-        yield MenuItem::linkToCrud('User', 'fas fa-comments', User::class);
-        yield MenuItem::linkToCrud('Team', 'fas fa-user-plus', Team::class);
-        yield MenuItem::linkToCrud('Game', 'fas fa-map-marker-alt', Game::class);
+        yield MenuItem::linkToCrud('User', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('Arbiter', 'fas fa-user-shield',User::class);
+        yield MenuItem::linkToCrud('Team', 'fas fa-people-group', Team::class);
+        yield MenuItem::linkToCrud('Game', 'fas fa-futbol', Game::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
 }

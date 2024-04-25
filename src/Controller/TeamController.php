@@ -3,9 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Team;
+use App\Entity\PlayerTeam;
+use App\Entity\User;
 use App\Form\TeamType;
 use App\Repository\TeamRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,13 +19,23 @@ use Symfony\Component\Routing\Attribute\Route;
 class TeamController extends AbstractController
 {
     #[Route('/', name: 'app_team_index', methods: ['GET'])]
-    public function index(TeamRepository $teamRepository): Response
+    public function index(TeamRepository $teamRepository, EntityManagerInterface $entityManager): Response
     {
         return $this->render('team/index.html.twig', [
             'teams' => $teamRepository->findAll(),
         ]);
     }
 
+    #[Route('/list', name:'app_team_list', methods: ['GET'])]
+    public function list(PlayerTeam $playerTeam, EntityManagerInterface $entityManager):Response
+    {
+        $currentUser = $this->getUser();
+        $playerTeamRepository = $entityManager->getRepository(PlayerTeam::class);
+        $userTeamCollection = $playerTeamRepository->findBy(['id_player' => $currentUser]);
+        return $this->render('team/list.html.twig', [
+            'playerTeams' => $userTeamCollection,
+        ]);
+    }
     #[Route('/new', name: 'app_team_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -48,12 +62,13 @@ class TeamController extends AbstractController
     #[Route('/{id}', name: 'app_team_show', methods: ['GET'])]
     public function show(Team $team): Response
     {
+
         return $this->render('team/show.html.twig', [
             'team' => $team,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_team_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_team_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Team $team, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(TeamType::class, $team);
@@ -80,5 +95,29 @@ class TeamController extends AbstractController
         }
 
         return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/join/{id}', name:'app_team_join', methods: ['GET', 'POST'])]
+    public function join(Request $request, EntityManagerInterface $entityManager): Response
+    {
+
+        $currentUser = $this->getUser();
+        $teamPlayerRepository = $entityManager->getRepository(PlayerTeam::class);
+        $playerTeamCollection = $teamPlayerRepository->findBy(['id_player' => $currentUser]);
+        $currentTeam = $request->attributes->get('id');
+        if(!$playerTeamCollection) {
+//        dd($playerTeamCollection, $currentTeam);
+            $teamRepository = $entityManager->getRepository(Team::class);
+            $playerTeam = new PlayerTeam();
+            $team = $teamRepository->findOneBy(['id' => $currentTeam]);
+            $playerTeam->setIdTeam($team);
+            $playerTeam->setIdPlayer($currentUser);
+            $entityManager->persist($playerTeam);
+            $entityManager->flush();
+        } else {
+            dd('non');
+        }
+
+        return $this->redirectToRoute('app_team_index');
     }
 }

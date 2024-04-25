@@ -1,0 +1,10 @@
+<ul>
+{% for playerTeam in playerTeams %}
+    <li>Nom: {{ playerTeam.idTeam.name }}</li>
+    <li>Slogan: {{ playerTeam.idTeam.slogan }}</li>
+    <li>Description: {{ playerTeam.idTeam.description }}</li>
+    {% if playerTeam.idTeam.lastMatched != null %}
+{#        <li>Dernière partie: {{  playerTeam.idTeam.lastMatched }}</li>#}
+    {% endif %}
+{% endfor %}
+</ul>
