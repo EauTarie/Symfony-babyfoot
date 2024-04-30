@@ -24,24 +24,24 @@ class GameType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('duration')
-            ->add('firstTeam', EntityType::class, [
-                'class' => Team::class,
-                'choice_label' => 'name',
-            ])
-            ->add('secondTeam', EntityType::class, [
-                'class' => Team::class,
-                'choice_label' => 'name',
-            ])
-//            ->add('winner', EntityType::class, [
-//                'class' => Team::class,
-//                'choice_label' => 'id',
-//            ])
+
+
         ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $game = $event->getData();
             $form = $event->getForm();
 
+            if (!$game || $game->getScore() === null) {
+                $form->add('firstTeam', EntityType::class, [
+                    'class' => Team::class,
+                    'choice_label' => 'name',
+                ]);
+                $form->add('secondTeam', EntityType::class, [
+                        'class' => Team::class,
+                        'choice_label' => 'name',
+                    ]);
+            }
+
             if ($game && $game->getId() != null) {
-//                dd($game, $form);
                 $form->add('score', TextType::class);
                 $form->add('winningReason', TextType::class);
                 $form->add('winner', ChoiceType::class, [
