@@ -36,14 +36,13 @@ class GameController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-        if ($form->get('id_team')->getData() === $form->get('secondTeam')->getData()) {
-            dd($request);
-            return $this->render('game/new.html.twig', [
-                'game' => $game,
-                'form' => $form,
-                $playerTeamCollection,
-            ]);
-        }
+            if ($form->get('firstTeam')->getData() === $form->get('secondTeam')->getData()) {
+                return $this->render('game/new.html.twig', [
+                    'game' => $game,
+                    'form' => $form,
+                    $playerTeamCollection,
+                ]);
+            }
             $entityManager->persist($game);
             $entityManager->flush();
 

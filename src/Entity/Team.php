@@ -43,9 +43,16 @@ class Team
     #[ORM\Column(length: 75)]
     private ?string $slogan = null;
 
+    /**
+     * @var Collection<int, Game>
+     */
+    #[ORM\OneToMany(targetEntity: Game::class, mappedBy: 'firstTeam')]
+    private Collection $games;
+
     public function __construct()
     {
         $this->playerTeams = new ArrayCollection();
+        $this->games = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -163,6 +170,36 @@ class Team
     public function setSlogan(string $slogan): static
     {
         $this->slogan = $slogan;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Game>
+     */
+    public function getGames(): Collection
+    {
+        return $this->games;
+    }
+
+    public function addGame(Game $game): static
+    {
+        if (!$this->games->contains($game)) {
+            $this->games->add($game);
+            $game->setFirstTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGame(Game $game): static
+    {
+        if ($this->games->removeElement($game)) {
+            // set the owning side to null (unless already changed)
+            if ($game->getFirstTeam() === $this) {
+                $game->setFirstTeam(null);
+            }
+        }
 
         return $this;
     }

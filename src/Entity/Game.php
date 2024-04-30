@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\GameRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -23,13 +25,13 @@ class Game
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $occuring_at = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Team $id_team = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Team $secondTeam = null;
+//    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+//    #[ORM\JoinColumn(nullable: false)]
+//    private ?Team $id_team = null;
+//
+//    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+//    #[ORM\JoinColumn(nullable: false)]
+//    private ?Team $secondTeam = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Team $winner = null;
@@ -45,6 +47,14 @@ class Game
 
     #[ORM\ManyToOne(inversedBy: 'games')]
     private ?User $vip = null;
+
+    #[ORM\ManyToOne(inversedBy: 'games')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Team $firstTeam = null;
+
+    #[ORM\ManyToOne(inversedBy: 'games')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Team $secondTeam = null;
 
     public function getId(): ?int
     {
@@ -83,30 +93,6 @@ class Game
     public function setOccuringAt(\DateTimeInterface $occuring_at): static
     {
         $this->occuring_at = $occuring_at;
-
-        return $this;
-    }
-
-    public function getIdTeam(): ?Team
-    {
-        return $this->id_team;
-    }
-
-    public function setIdTeam(Team $id_team): static
-    {
-        $this->id_team = $id_team;
-
-        return $this;
-    }
-
-    public function getSecondTeam(): ?Team
-    {
-        return $this->secondTeam;
-    }
-
-    public function setSecondTeam(Team $secondTeam): static
-    {
-        $this->secondTeam = $secondTeam;
 
         return $this;
     }
@@ -167,6 +153,30 @@ class Game
     public function setVip(?User $vip): static
     {
         $this->vip = $vip;
+
+        return $this;
+    }
+
+    public function getFirstTeam(): ?Team
+    {
+        return $this->firstTeam;
+    }
+
+    public function setFirstTeam(?Team $firstTeam): static
+    {
+        $this->firstTeam = $firstTeam;
+
+        return $this;
+    }
+
+    public function getSecondTeam(): ?Team
+    {
+        return $this->secondTeam;
+    }
+
+    public function setSecondTeam(?Team $secondTeam): static
+    {
+        $this->secondTeam = $secondTeam;
 
         return $this;
     }
